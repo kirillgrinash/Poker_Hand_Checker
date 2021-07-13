@@ -1,41 +1,3 @@
-
-# /////code for checking dups//////
-# index = 0
-# index_2 = 1
-# card_test = "AH 3H 5H 4H 2H"
-# cards = card_test.split
-# while index < cards.length
-#   card_check = cards[index]
-#   while index_2 <= cards.length
-#     if card_check == cards[index_2]
-#       p "error"
-#     end
-#     index_2 += 1
-#   end
-#   p card_check
-#   index += 1
-#   index_2 = index + 1
-# end
-
-
-
-
-# card_test = "AH 3H 5H 4H 2H"
-# abc = card_test.upcase.split
-# p abc
-# abc.each { |card|
-#   card = card.chop
-#   p card
-# }
-
-
-
-
-
-
-
-
-
 class Hand
   def initialize(cards)
     @cards = cards
@@ -71,15 +33,32 @@ class Hand
       end
     }
   end
+
+  def duplicate_check
+    index = 0
+    index_2 = 1
+    while index < @card.length
+      card_check = @card[index]
+      while index_2 <= @card.length
+        if card_check == @card[index_2]
+        p "error duplicate card found #{card_check}"
+        end
+        index_2 += 1
+      end
+      index += 1
+      index_2 = index + 1
+    end
+  end
 end
 
 
-test = Hand.new("AH 3H 4H 5H 10C")
-# bad_test = Hand.new("2H 1H 11H")
+# test = Hand.new("AH 3H 4H 5H 10C")
+# bad_test = Hand.new("2H 1H 11H 11H")
 
 # test.number_cards
-test.suit_check
-test.face_check
+# test.suit_check
+# test.face_check
+# bad_test.duplicate_check
 # bad_test.number_cards
 
 
