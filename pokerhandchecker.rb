@@ -20,6 +20,17 @@
 
 
 
+# card_test = "AH 3H 5H 4H 2H"
+# abc = card_test.upcase.split
+# p abc
+# abc.each { |card|
+#   card = card.chop
+#   p card
+# }
+
+
+
+
 
 
 
@@ -28,6 +39,7 @@
 class Hand
   def initialize(cards)
     @cards = cards
+    @card = cards.upcase.split
   end
 
   def number_cards
@@ -37,35 +49,36 @@ class Hand
   end
 
   def face_check
-    @cards.upcase.split.each { |card|
-      if card[0] == "A" || card[0] == "J" || card[0] == "Q" || card[0] == "K"
-        p "valid suit"
-      # this code is awful, has to be an easier way to review 3..10, will follow back  
-      # cannot use card[0] since error will occur when using 10, must correct
-      elsif card[0].to_i == 2 || card[0].to_i == 3 || card[0].to_i == 4 || card[0].to_i == 5 || card[0].to_i == 6 || card[0].to_i == 7 || card[0].to_i == 8 || card[0].to_i == 9 
-        p "valid suit"
+    @card.each { |card|
+      card = card.chop
+      if card == "A" || card == "J" || card == "Q" || card == "K"
+        p "valid letter face"
+      elsif card.to_i.between?(2, 10) == true
+        p "valid number face"
       else
-        p "invalid suit"
+        p "invalid face"
       end
     }
   end
 
   def suit_check
-    @cards.upcase.split.each { |card|
+    @card.each { |card|
       if card[1] != "H" && card[1] != "D" && card[1] != "C" && card[1] != "S"
         p "invalid suit"
+      else
+        p "valid suit"
       end
     }
   end
 end
 
 
-# test = Hand.new("AH 3H 4H 5H 6C")
+test = Hand.new("AH 3H 4H 5H 10C")
 # bad_test = Hand.new("2H 1H 11H")
 
 # test.number_cards
-# test.suit_check
-# test.face_check
+test.suit_check
+test.face_check
 # bad_test.number_cards
 
 
