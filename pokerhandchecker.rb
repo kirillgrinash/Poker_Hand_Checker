@@ -63,7 +63,8 @@ class Hand
 
   def suit_check
     @card.each { |card|
-      if card[1] != "H" && card[1] != "D" && card[1] != "C" && card[1] != "S"
+      card = card.slice(-1,1)
+      if card != "H" && card != "D" && card != "C" && card != "S"
         p "invalid suit"
       else
         p "valid suit"
