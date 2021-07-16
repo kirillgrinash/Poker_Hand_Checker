@@ -1,13 +1,13 @@
 class Hand
+  
   def initialize(cards)
     @cards = cards
     @card = cards.upcase.split
-    @sort_cards = @card.sort!
   end
 
   def number_cards
     if @card.length != 5
-      p "invalid card number"
+      p "Invalid card number, please enter 5 cards"
     end
   end
 
@@ -15,11 +15,9 @@ class Hand
     @card.each { |card|
       card = card.chop
       if card == "A" || card == "J" || card == "Q" || card == "K"
-        p "valid letter face"
       elsif card.to_i.between?(2, 10) == true
-        p "valid number face"
       else
-        p "invalid face"
+        p "Invalid face input #{card}"
       end
     }
   end
@@ -28,9 +26,8 @@ class Hand
     @card.each { |card|
       card = card.slice(-1,1)
       if card != "H" && card != "D" && card != "C" && card != "S"
-        p "invalid suit"
+        p "Invalid suit input #{card}"
       else
-        p "valid suit"
       end
     }
   end
@@ -51,24 +48,11 @@ class Hand
     end
   end
 
-  def flush
-    index = 0
-    base = @card[0].slice(-1, 1)
-    @card.each { |card|
-      card = card.slice(-1,1) 
-      unless card != base
-        p card
-        index += 1
-        p index
-      end
-    }
-    if index == 5
-      p "true flush"
-    end
-  end
-
+  # Checks for Straight Flush, Flush and Straight
   # Dirty code, need to create a new approach to catch straights
-  def straight
+  def straight_flush
+    straight = 0
+    flush = 0
     face_card_counter = {}
     @card.each { |card|
       card = card.chop
@@ -78,41 +62,62 @@ class Hand
         face_card_counter[card] += 1
       end
     }
-    p face_card_counter
     if face_card_counter["A"] == 1 && face_card_counter["K"] == 1 && face_card_counter["Q"] == 1 && face_card_counter["J"] == 1 && face_card_counter["10"] == 1  
-      p "Straight"
+      straight += 1
     elsif
       face_card_counter["K"] == 1 && face_card_counter["Q"] == 1 && face_card_counter["J"] == 1 && face_card_counter["10"] == 1 && face_card_counter["9"] == 1
-      p "straight"
+      straight += 1
     elsif
       face_card_counter["Q"] == 1 && face_card_counter["J"] == 1 && face_card_counter["10"] == 1 && face_card_counter["9"] == 1 && face_card_counter["8"] == 1
-      p "straight"
+      straight += 1
     elsif
       face_card_counter["J"] == 1 && face_card_counter["10"] == 1 && face_card_counter["9"] == 1 && face_card_counter["8"] == 1 && face_card_counter["7"] == 1
-      p "straight"
+      straight += 1
     elsif
       face_card_counter["10"] == 1 && face_card_counter["9"] == 1 && face_card_counter["8"] == 1 && face_card_counter["7"] == 1 && face_card_counter["6"] == 1
-      p "straight"
+      straight += 1
     elsif
       face_card_counter["9"] == 1 && face_card_counter["8"] == 1 && face_card_counter["7"] == 1 && face_card_counter["6"] == 1 && face_card_counter["5"] == 1
-      p "straight"
+      straight += 1
     elsif
       face_card_counter["8"] == 1 && face_card_counter["7"] == 1 && face_card_counter["6"] == 1 && face_card_counter["5"] == 1 && face_card_counter["4"] == 1
-      p "straight"
+      straight += 1
     elsif
       face_card_counter["7"] == 1 && face_card_counter["6"] == 1 && face_card_counter["5"] == 1 && face_card_counter["4"] == 1 && face_card_counter["3"] == 1
-      p "straight"
+      straight += 1
     elsif
       face_card_counter["6"] == 1 && face_card_counter["5"] == 1 && face_card_counter["4"] == 1 && face_card_counter["3"] == 1 && face_card_counter["2"] == 1
-      p "straight"
+      straight += 1
     elsif
       face_card_counter["5"] == 1 && face_card_counter["4"] == 1 && face_card_counter["3"] == 1 && face_card_counter["2"] == 1 && face_card_counter["A"] == 1
-      p "straight"
-    else
-      p "no straight"
+      straight += 1
     end
+
+    index = 0
+    base = @card[0].slice(-1, 1)
+    @card.each { |card|
+      card = card.slice(-1,1) 
+      unless card != base
+        index += 1
+      end
+    }
+    if index == 5
+      flush += 1
+    end
+
+    if straight + flush == 2
+      p "Straight Flush"
+    elsif
+      straight == 1
+      p "Straight"
+    elsif
+      flush == 1
+      p "Flush"
+    end
+
   end
 
+  # checks for pairs and fullhouse
   def pairs_fullhouse
     face_card_counter = {}
     fullhouse_counter = 0
@@ -136,8 +141,6 @@ class Hand
         number == 2
         p "2 of a kind #{face}"
         fullhouse_counter += 1
-      else
-        p "no pair"
       end
     }
     if fullhouse_counter == 2
@@ -148,25 +151,16 @@ class Hand
 end
 
 
-test = Hand.new("KH 10H AD 5D 3C")
-test2 = Hand.new("AH 10C JH QD KS")
-bad_test = Hand.new("2H 1H 11H 11H")
-
-
-# test.number_cards
-# test.suit_check
-# test.face_check
-# test.duplicate_check
-# test.flush
-# test.straight
-# test.pairs_fullhouse
-# test.deck_sort
-# bad_test.number_cards
-# bad_test.suit_check
-# bad_test.face_check
-# bad_test.duplicate_check
-
-
+puts "Hello! Please enter 5 cards. Example: AD 10H 3C KS 4H"
+puts "First is the card face and last is the card suit"
+input = gets.chomp
+poker_hand = Hand.new(input)
+poker_hand.number_cards
+poker_hand.face_check
+poker_hand.suit_check
+poker_hand.duplicate_check
+poker_hand.straight_flush
+poker_hand.pairs_fullhouse
 
 
 
