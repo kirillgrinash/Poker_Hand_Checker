@@ -1,7 +1,8 @@
 # Poker_Hand_Checker
 ///How to Use///
 
-Run ruby file in terminal
+Run ruby file in terminal 
+ruby pokerhandchecker.rb
 
 Enter 5 cards in one string
 Face comes first followed by suit
@@ -12,3 +13,12 @@ Face comes first followed by suit
   J = Jack    S = Spades
   
 Program will provide info on hand provided!
+
+
+
+
+
+
+RSpec test
+rspec pokerhandchecker.rb
+
