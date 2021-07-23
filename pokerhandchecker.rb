@@ -8,7 +8,9 @@ class Hand
   def number_cards
     if @card.length != 5
       p "Invalid card number, please enter 5 cards"
+      return false
     end
+    true
   end
 
   def face_check
@@ -18,8 +20,10 @@ class Hand
       elsif card.to_i.between?(2, 10) == true
       else
         p "Invalid face input #{card}"
+        return false
       end
     }
+    true
   end
 
   def suit_check
@@ -27,25 +31,28 @@ class Hand
       card = card.slice(-1,1)
       if card != "H" && card != "D" && card != "C" && card != "S"
         p "Invalid suit input #{card}"
-      else
+        return false
       end
     }
+    true
   end
 
   def duplicate_check
     index = 0
-    index_2 = 1
+    index2 = 1
     while index < @card.length
       card_check = @card[index]
-      while index_2 <= @card.length
-        if card_check == @card[index_2]
-        p "error duplicate card found #{card_check}"
+      while index2 <= @card.length
+        if card_check == @card[index2]
+          p "error duplicate card found #{card_check}"
+          return false
         end
-        index_2 += 1
+        index2 += 1
       end
       index += 1
-      index_2 = index + 1
+      index2 = index + 1
     end
+    true
   end
 
   # Checks for Straight Flush, Flush and Straight
@@ -129,38 +136,57 @@ class Hand
         face_card_counter[card] += 1
       end
     }
-
+    arr = []
     face_card_counter.each { |face, number|
       if number == 4
         p "4 of a kind #{face}"
+        arr << 4
       elsif
         number == 3
         p "3 of a kind #{face}"
         fullhouse_counter += 1
+        arr << 3
       elsif
         number == 2
         p "2 of a kind #{face}"
         fullhouse_counter += 1
+        arr << 2
       end
     }
     if fullhouse_counter == 2
-      p "fullhouse"
+      p "Fullhouse"
+      arr << "F"
     end
+    p arr
+    p face_card_counter
   end
 
 end
 
 
-puts "Hello! Please enter 5 cards. Example: AD 10H 3C KS 4H"
-puts "First is the card face and last is the card suit"
-input = gets.chomp
-poker_hand = Hand.new(input)
-poker_hand.number_cards
-poker_hand.face_check
-poker_hand.suit_check
-poker_hand.duplicate_check
-poker_hand.straight_flush
-poker_hand.pairs_fullhouse
+# puts "Hello! Please enter 5 cards. Example: AD 10H 3C KS 4H"
+# puts "First is the card face and last is the card suit"
+# input = gets.chomp
+# poker_hand = Hand.new(input)
+# poker_hand.number_cards
+# poker_hand.face_check
+# poker_hand.suit_check
+# poker_hand.duplicate_check
+# poker_hand.straight_flush
+# poker_hand.pairs_fullhouse
 
+def run
+  puts "Hello! Please enter 5 cards. Example: AD 10H 3C KS 4H"
+  puts "First is the card face and last is the card suit"
+  input = gets.chomp
+  poker_hand = Hand.new(input)
+  return unless poker_hand.number_cards
+  return unless poker_hand.face_check
+  return unless poker_hand.suit_check
+  return unless poker_hand.duplicate_check
+  poker_hand.straight_flush
+  poker_hand.pairs_fullhouse
+end
 
+run
 
