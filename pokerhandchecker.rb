@@ -16,9 +16,7 @@ class Hand
   def face_check
     @card.each { |card|
       card = card.chop
-      if card == "A" || card == "J" || card == "Q" || card == "K"
-      elsif card.to_i.between?(2, 10) == true
-      else
+      unless card == "A" || card == "J" || card == "Q" || card == "K" || card.to_i.between?(2, 10) == true
         p "Invalid face input #{card}"
         return false
       end
@@ -38,19 +36,17 @@ class Hand
   end
 
   def duplicate_check
-    index = 0
-    index2 = 1
-    while index < @card.length
-      card_check = @card[index]
-      while index2 <= @card.length
-        if card_check == @card[index2]
+    index = 1
+    @card.each do |card|
+      card_check = card
+      while index <= @card.length
+        if card_check == @card[index]
           p "error duplicate card found #{card_check}"
           return false
         end
-        index2 += 1
+        index += 1
       end
-      index += 1
-      index2 = index + 1
+      index = @card.index(card_check) + 2
     end
     true
   end
@@ -229,5 +225,42 @@ RSpec.describe Hand do
       expect(result).to eq(false)
     end
   end
+
+  # Test suit_check valid input
+  describe "suit_check" do
+    it "should return true, all cards have a valid suit" do
+      poker_hand = Hand.new("AD 10H 3C 2S 4H")
+      result = poker_hand.suit_check
+      expect(result).to eq(true)
+    end
+  end
+
+  # Test suit_check invalid input
+  describe "suit_check" do
+    it "should return false, invalid card suit found" do
+      poker_hand = Hand.new("AZ 10H 3C 2S 4H")
+      result = poker_hand.suit_check
+      expect(result).to eq(false)
+    end
+  end
+
+  # Test duplicate_check valid input
+  describe "duplicate_check" do
+    it "should return true, no duplicate cards found" do
+      poker_hand = Hand.new("AD 10H 3C 2S 4H")
+      result = poker_hand.duplicate_check
+      expect(result).to eq(true)
+    end
+  end
+
+  # Test duplicate_check invalid input
+  describe "duplicate_check" do
+    it "should return false, duplicate cards found" do
+      poker_hand = Hand.new("AD 10H 10H 2S 4H")
+      result = poker_hand.duplicate_check
+      expect(result).to eq(false)
+    end
+  end
+
 end
 
