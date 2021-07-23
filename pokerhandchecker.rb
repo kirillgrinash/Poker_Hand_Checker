@@ -190,3 +190,44 @@ end
 
 run
 
+require 'rspec'
+
+RSpec.describe Hand do
+
+  # Test number_cards valid input
+  describe "number_cards" do
+    it "should return true for 5 cards" do
+      poker_hand = Hand.new("AD 10H 3C KS 4H")
+      result = poker_hand.number_cards
+      expect(result).to eq(true)
+    end
+  end
+
+  # Test number_cards invalid input
+  describe "number_cards" do
+    it "should return false Invalid card number, please enter 5 cards" do
+      poker_hand = Hand.new("AD 10H 3C")
+      result = poker_hand.number_cards
+      expect(result).to eq(false)
+    end
+  end
+
+  # Test face_check valid input
+  describe "face_check" do
+    it "should return true, all cards have a valid face" do
+      poker_hand = Hand.new("AD 10H 3C KS 4H")
+      result = poker_hand.face_check
+      expect(result).to eq(true)
+    end
+  end
+
+  # Test face_check invalid input
+  describe "face_check" do
+    it "should return false, invalid card face found" do
+      poker_hand = Hand.new("AD 11H 3C 1S 4H")
+      result = poker_hand.face_check
+      expect(result).to eq(false)
+    end
+  end
+end
+
